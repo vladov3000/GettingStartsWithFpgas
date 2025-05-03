@@ -3,7 +3,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity SwitchesToLeds is
-   port (switch1  : in  std_logic
+   port ( switch1 : in  std_logic
         ; switch2 : in  std_logic
         ; switch3 : in  std_logic
         ; switch4 : in  std_logic
