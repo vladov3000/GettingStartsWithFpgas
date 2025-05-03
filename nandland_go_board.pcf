@@ -1,0 +1,13 @@
+# Physical constraints for the Nandland Go Board
+
+# LED Pins
+set_io led1 56
+set_io led2 57
+set_io led3 59
+set_io led4 60
+
+# Push Button Switches
+set_io switch1 53
+set_io switch2 51
+set_io switch3 54
+set_io switch4 52
