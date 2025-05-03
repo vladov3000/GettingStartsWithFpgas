@@ -1,5 +1,7 @@
 # Physical constraints for the Nandland Go Board
 
+set_io clock 15
+
 # LED Pins
 set_io led1 56
 set_io led2 57
