@@ -19,7 +19,7 @@ begin
             state_switch1 <= switch1;
 
             if switch1 = '0' and state_switch1 = '1' then
-                state_led1 <= not state_led1
+                state_led1 <= not state_led1;
             end if;
         end if;
     end process;
