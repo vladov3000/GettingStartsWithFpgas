@@ -10,6 +10,6 @@ entity AndGate is
         );
 end entity AndGate;
 
-architecture Default of AndGate is begin
+architecture Rtl of AndGate is begin
     led1 <= switch1 and switch2;
-end architecture Default;
+end architecture Rtl;

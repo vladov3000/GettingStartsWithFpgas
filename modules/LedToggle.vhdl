@@ -10,7 +10,7 @@ entity LedToggle is
         );
 end entity LedToggle;
 
-architecture Default of LedToggle is
+architecture Rtl of LedToggle is
     signal state_led1    : std_logic := '0';
     signal state_switch1 : std_logic := '0';
 begin
@@ -25,4 +25,4 @@ begin
     end process;
 
     led1 <= state_led1;
-end architecture Default;
+end architecture Rtl;

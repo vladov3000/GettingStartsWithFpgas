@@ -1,3 +1,8 @@
+/*
+ * Simulate random pushes and releases of the button, expecting that the led is only
+ * toggled when switch1 is released.
+ */
+
 #include <cxxrtl/cxxrtl.h>
 #include <cxxrtl/cxxrtl_vcd.h>
 #include <fstream>
@@ -17,8 +22,6 @@ int main() {
 
     std::ofstream waves("output/waves.vcd");
 
-    // The test randomly pushes and releases the button, and expects that the led is only
-    // toggled when the button is released.
     bool led = false;
 
     for (int step = 0; step < 1000; step++) {

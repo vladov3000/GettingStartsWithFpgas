@@ -51,7 +51,7 @@ entity Lfsr is
         );
 end entity Lfsr;
 
-architecture Default for Lfsr
+architecture Rtl for Lfsr
     signal lfsr : std_logic_vector(21 downto 0);
     signal lsb  : std_logic;
 begin
@@ -64,7 +64,7 @@ begin
     lsb  <= lfsr(21) xnor lfsr(20);
     done <= '1' when (lfsr = "0000000000000000000000") else '0';
     data <= lfsr;
-end architecture Default;
+end architecture Rtl;
 
 entity Demux is
     port
@@ -78,9 +78,9 @@ entity Demux is
         );
 end entity Demux;
 
-architecture Default for Demux begin
+architecture Rtl for Demux begin
     data0 <= data when select1 = '0' and select0 = '0' else 0;
     data1 <= data when select1 = '0' and select0 = '1' else 0;
     data2 <= data when select1 = '1' and select0 = '0' else 0;
     data3 <= data when select1 = '1' and select0 = '1' else 0;
-end architecture Default;
+end architecture Rtl;

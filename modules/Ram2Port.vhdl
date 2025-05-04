@@ -22,7 +22,7 @@ entity Ram2Port is
         );
 end entity Ram2Port;
 
-architecture Default for Ram2Prot is
+architecture Rtl for Ram2Prot is
     signal memory : array (0 to DEPTH - 1) of std_logic_vector (WIDTH - 1 downto 0);
 begin
     process (write_clock) begin
@@ -39,4 +39,4 @@ begin
             read_data_valid <= read_enable;
         end if;
     end process;
-end architecture Default;
+end architecture Rtl;

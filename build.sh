@@ -1,23 +1,44 @@
 #!/usr/bin/env bash
 
-set -e
+# -e Exit on any non-zero exit code.
+# -x Show commands before they are executed.
+set -ex
+
+state=initial
 
 for argument in "$@"; do
-    case "$argument" in
-        --program)
-            program=true
+    case "$state" in
+        initial)
+            case "$argument" in
+                --program)
+                    program=true
+                    ;;
+                --simulate)
+                    simulate=true
+                    ;;
+                --generic)
+                    state=generic_key
+                    ;;
+                *)
+                    if [ -z "$input_path" ]; then
+                        input_path=$argument
+                        input=$(basename "${input_path%.vhdl}")
+                    else
+                        dependency_paths+=("$argument")
+                        dependencies+=("$(basename "${argument%.vhdl}")")
+                    fi
+                    ;;
+            esac
             ;;
-        --simulate)
-            simulate=true
+        generic_key)
+            generic_key=$argument
+            state=generic_value
             ;;
-        *)
-            if [ -z "$input_path" ]; then
-                input_path=$argument
-                input=$(basename "${input_path%.vhdl}")
-            else
-                dependency_paths+=("$argument")
-                dependencies+=("$(basename "${argument%.vhdl}")")
-            fi
+        generic_value)
+            generic_value=$argument
+            generics_ghdl+=("-g$generic_key=$generic_value")
+            generics_gcc+=("-D$generic_key=$generic_value")
+            state=initial
             ;;
     esac
 done
@@ -32,11 +53,11 @@ mkdir -p output
 
 if [ -n "$simulate" ]; then
     yosys "${yosys_flags[@]}" <<END
-ghdl ${dependency_paths[*]} $input_path -e $input;
+ghdl --std=08 ${generics_ghdl[*]} ${dependency_paths[*]} $input_path -e $input;
 write_cxxrtl output/$input.cpp
 END
     cxxrtl_include="$(yosys-config --datdir)/include/backends/cxxrtl/runtime"
-    g++ -I "$cxxrtl_include" -I "output" -o "output/$input" "simulator/$input.cpp"
+    g++ -I "$cxxrtl_include" -I "output" -o "output/$input" "${generics_gcc[@]}" "simulator/$input.cpp"
     ./output/"$input"
 else
     yosys "${yosys_flags[@]}" <<END

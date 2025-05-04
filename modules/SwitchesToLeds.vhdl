@@ -14,9 +14,9 @@ entity SwitchesToLeds is
         );
 end entity SwitchesToLeds;
 
-architecture Default of SwitchesToLeds is begin
+architecture Rtl of SwitchesToLeds is begin
     led1 <= switch1;
     led2 <= switch2;
     led3 <= switch3;
     led4 <= switch4;
-end architecture Default;
+end architecture Rtl;

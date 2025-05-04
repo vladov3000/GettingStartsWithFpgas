@@ -22,7 +22,7 @@ entity Fifo is
         );
 end entity Fifo;
 
-architecture Default for Fifo
+architecture Rtl for Fifo
     signal write_address : std_logic_vector;
     signal read_address  : std_logic_vector;
     signal count         : integer range 0 to DEPTH;
@@ -54,4 +54,4 @@ begin
             if write_address = DEPTH - 1            
         end if;
     end process;
-end architecture Default;
+end architecture Rtl;

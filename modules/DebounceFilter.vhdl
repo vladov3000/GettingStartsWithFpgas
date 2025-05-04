@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity DebounceFilter is
-    generic (LIMIT : integer);
+    generic (limit : integer := 5);
     port
         ( clock     : in  std_logic
         ; bouncy    : in  std_logic
@@ -12,15 +12,17 @@ entity DebounceFilter is
         );
 end entity DebounceFilter;
 
-architecture Default of DebounceFilter is
-    signal count : integer range 0 to LIMIT - 1 := 0;
+architecture Rtl of DebounceFilter is
+    constant max_count : integer := limit - 1;
+
+    signal count : integer range 0 to max_count := 0;
     signal state : std_logic := '0';
 begin
     process (clock) is begin
         if rising_edge(clock) then
-            if (bouncy /= state and count < LIMIT - 1) then
+            if (bouncy /= state and count < max_count) then
                 count <= count + 1;
-            elsif count = LIMIT - 1 then
+            elsif count = max_count then
                 state <= bouncy;
                 count <= 0;
             else
@@ -30,4 +32,4 @@ begin
     end process;
 
     debounced <= state;
-end architecture Default;
+end architecture Rtl;
