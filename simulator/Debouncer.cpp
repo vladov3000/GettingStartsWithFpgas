@@ -1,6 +1,10 @@
 /*
  * Simulate pushes and releases of the button, expecting that the led is only
  * toggled when switch1 is held and released after `limit` clock cycles.
+ * 
+ * Run the simulation with:
+ * ./build.sh --generic limit 5 --simulate ./modules/Debouncer.vhdl ./modules/DebounceFilter.vhdl ./modules/LedToggle.vhdl
+ * 
  */
 
 #ifndef limit

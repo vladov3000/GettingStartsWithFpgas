@@ -1,6 +1,10 @@
 /*
  * Simulate random pushes and releases of the button, expecting that the led is only
  * toggled when switch1 is released.
+ * 
+ * Run the simulation with:
+ * ./build.sh --simulate ./modules/LedToggle.vhdl
+ * 
  */
 
 #include <cxxrtl/cxxrtl.h>
