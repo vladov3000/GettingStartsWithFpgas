@@ -3,6 +3,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity SelectiveBlink is
+    generic (lsfr_width : integer := 22);
     port
         ( clock   : in  std_logic
         ; switch1 : in  std_logic
@@ -18,11 +19,13 @@ architecture Rtl of SelectiveBlink is
     signal toggle : std_logic := '0';
     signal done   : std_logic := '0';
 begin
-    lfsr : entity work.Lfsr port map
-        ( clock => clock
-        , data  => open
-        , done  => done
-        );
+    lfsr : entity work.Lfsr 
+        generic map (width => lsfr_width)
+        port map
+            ( clock => clock
+            , data  => open
+            , done  => done
+            );
 
     process (clock) is begin
         if rising_edge(clock) then

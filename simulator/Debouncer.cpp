@@ -18,7 +18,7 @@
 
 #include "../output/Debouncer.cpp"
 
-using cxxrtl::value;
+using Bit = value<1>;
 
 int main() {
     cxxrtl_design::p_Debouncer top;
@@ -29,63 +29,66 @@ int main() {
     cxxrtl::vcd_writer vcd;
     vcd.timescale(1, "us");
 
-    value<1> expected_led(false);
-
+    Bit expected_led;
+    Bit debounced;
+    Bit state;
     vcd.add_without_memories(all_debug_items);
-    vcd.add("expected_led", cxxrtl::debug_item(expected_led));
+    vcd.add("expected_led", expected_led);
+    vcd.add("test_debounced", debounced);
+    vcd.add("test_state", state);
 
     std::ofstream waves("output/waves.vcd");
 
     int max_count = limit - 1;
-
-    bool debounced = false;
-    int  count     = 0;
-    bool state     = false;
+    int count     = 0;
 
     top.p_switch1.set(true);
 
     for (int step = 0; step < 1000; step++) {
-        bool switch_bool = top.p_switch1.get<bool>();
+        Bit next_clock        = top.p_clock.bit_not();
+        Bit next_switch       = top.p_switch1;
+        int next_count        = count;
+        Bit next_debounced    = debounced;
+        Bit next_state        = state;
+        Bit next_expected_led = expected_led;
 
-        bool     next_switch       = switch_bool;
-        value<1> next_expected_led = expected_led;
-        bool     next_debounced    = debounced;
-        int      next_count        = count;
-        bool     next_state        = debounced;
+        if (!top.p_clock) {
+            if (top.p_switch1 != debounced && count < max_count) {
+                next_count = count + 1;
+            } else if (count == max_count) {
+                next_count     = 0;
+                next_debounced = top.p_switch1;
+            } else {
+                next_count = 0;
+            }
 
-        if (switch_bool != debounced && count < max_count) {
-            next_count = count + 1;
-        } else if (count == max_count) {
-            next_debounced = switch_bool;
-            next_count     = 0;
-            next_switch    = !switch_bool; // Turn switch off/on after we hold it for long enough.
-        } else {
-            next_count = 0;
+            // Introduce jitter with a probablity of 2 ^ (-1/limit), such that 1/2 holds succeeds.
+            if ((rand() & ((1 << limit) - 1)) == 0) {
+                next_switch = top.p_switch1.bit_not();
+            }
+
+            if (top.p_switch1 == debounced) {
+                next_switch = top.p_switch1.bit_not();
+            }
+
+            next_state = debounced;
+
+            if (!debounced && state) {
+                next_expected_led = expected_led.bit_not();
+            }
         }
 
-        // Introduce jitter with a probablity of 2 ^ (-1/limit), such that 1/2 holds succeeds.
-        if (rand() & ((1 << limit) - 1) == 0) {
-            next_switch = !switch_bool;
-        }
+        vcd.sample(step);
+        top.step();
 
-        if (!debounced && state) {
-            next_expected_led = expected_led.bit_not();
-        }
+        top.p_clock   = next_clock;
+        top.p_switch1 = next_switch;
+        count         = next_count;
+        debounced     = next_debounced;
+        state         = next_state;
+        expected_led  = next_expected_led;
 
-        assert(expected_led == top.p_led1);
-
-        // Toggle clock.
-        for (int i = 0; i < 2; i++) {
-            top.p_clock.set(i == 0);
-            top.step();
-            vcd.sample(2 * step + i);
-        }
-
-        top.p_switch1.set(next_switch);
-        expected_led = next_expected_led;
-        debounced    = next_debounced;
-        count        = next_count;
-        state        = next_state;
+        assert(top.p_led1 == expected_led);
 
         waves << vcd.buffer;
         vcd.buffer.clear();

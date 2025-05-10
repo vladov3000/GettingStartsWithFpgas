@@ -57,7 +57,7 @@ ghdl --std=08 ${generics_ghdl[*]} ${dependency_paths[*]} $input_path -e $input;
 write_cxxrtl output/$input.cpp
 END
     cxxrtl_include="$(yosys-config --datdir)/include/backends/cxxrtl/runtime"
-    g++ -I "$cxxrtl_include" -I "output" -o "output/$input" "${generics_gcc[@]}" "simulator/$input.cpp"
+    g++ -std=c++20 -I "$cxxrtl_include" -I "output" -o "output/$input" "${generics_gcc[@]}" "simulator/$input.cpp"
     ./output/"$input"
 else
     yosys "${yosys_flags[@]}" <<END

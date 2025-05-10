@@ -13,8 +13,8 @@ entity Lfsr is
 end entity Lfsr;
 
 architecture Rtl of Lfsr is
-    signal shift_register : std_logic_vector(width - 1 downto 0);
-    signal lsb            : std_logic;
+    signal shift_register : std_logic_vector(width - 1 downto 0) := (others => '0');
+    signal lsb            : std_logic                            := '0';
 begin
     process (clock) begin
         if rising_edge (clock) then
