@@ -49,11 +49,13 @@ frequency=25 # MHz
 # -Q Hides the license notice printed at the start.
 yosys_flags=(-m ghdl -Q)
 
+ghdl_analyze="ghdl --std=08 ${generics_ghdl[*]} ${dependency_paths[*]} $input_path -e $input;"
+
 mkdir -p output
 
 if [ -n "$simulate" ]; then
     yosys "${yosys_flags[@]}" <<END
-ghdl --std=08 ${generics_ghdl[*]} ${dependency_paths[*]} $input_path -e $input;
+$ghdl_analyze
 write_cxxrtl output/$input.cpp
 END
     cxxrtl_include="$(yosys-config --datdir)/include/backends/cxxrtl/runtime"
@@ -61,7 +63,7 @@ END
     ./output/"$input"
 else
     yosys "${yosys_flags[@]}" <<END
-ghdl ${dependency_paths[*]} $input_path -e $input;
+$ghdl_analyze
 synth_ice40 -json output/$input.json;
 write_json -noscopeinfo output/$input.json;
 END

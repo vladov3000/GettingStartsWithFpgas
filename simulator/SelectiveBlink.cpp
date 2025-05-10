@@ -42,8 +42,7 @@ int main() {
 
     std::ofstream waves("output/waves.vcd");
 
-    // It can never reach the all bit set state, because we use xor as our linear
-    // function. Hence, the -2.
+    // Should be the period of the LFSR.
     Count max_count = Count((1u << lsfr_width) - 2);
 
     for (int step = 0; step < 1000; step++) {
