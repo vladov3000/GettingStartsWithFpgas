@@ -12,13 +12,13 @@
 
 #include "../output/SelectiveBlink.cpp"
 
-#ifndef lsfr_width
+#ifndef LSFR_WIDTH
 #warning "Missing lsfr_width generic parameter."
-#define lsfr_width 22
+#define LSFR_WIDTH 22
 #endif
 
 using Bit   = value<1>;
-using Count = value<lsfr_width>;
+using Count = value<LSFR_WIDTH>;
 
 int main() {
     cxxrtl_design::p_SelectiveBlink top;
@@ -43,7 +43,7 @@ int main() {
     std::ofstream waves("output/waves.vcd");
 
     // Should be the period of the LFSR.
-    Count max_count = Count((1u << lsfr_width) - 2);
+    Count max_count = Count((1u << LSFR_WIDTH) - 2);
 
     for (int step = 0; step < 1000; step++) {
         int select = rand() & 0b1;

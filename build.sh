@@ -37,7 +37,7 @@ for argument in "$@"; do
         generic_value)
             generic_value=$argument
             generics_ghdl+=("-g$generic_key=$generic_value")
-            generics_gcc+=("-D$generic_key=$generic_value")
+            generics_gcc+=("-D${generic_key^^}=$generic_value")
             state=initial
             ;;
     esac

@@ -7,9 +7,9 @@
  * 
  */
 
-#ifndef limit
+#ifndef LIMIT
 #warning "Missing limit generic parameter."
-#define limit 5
+#define LIMIT 5
 #endif
 
 #include <cxxrtl/cxxrtl.h>
@@ -39,7 +39,7 @@ int main() {
 
     std::ofstream waves("output/waves.vcd");
 
-    int max_count = limit - 1;
+    int max_count = LIMIT - 1;
     int count     = 0;
 
     top.p_switch1.set(true);
@@ -62,8 +62,8 @@ int main() {
                 next_count = 0;
             }
 
-            // Introduce jitter with a probablity of 2 ^ (-1/limit), such that 1/2 holds succeeds.
-            if ((rand() & ((1 << limit) - 1)) == 0) {
+            // Introduce jitter with a probablity of 2 ^ (-1/LIMIT), such that 1/2 holds succeeds.
+            if ((rand() & ((1 << LIMIT) - 1)) == 0) {
                 next_switch = top.p_switch1.bit_not();
             }
 
