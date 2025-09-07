@@ -1,5 +1,12 @@
-# Physical constraints for the Nandland Go Board
+# ##############################################################################
+# iCEcube PCF
+# Version:            2014.12.27052
+# File Generated:     Apr 27 2015 09:46:33
+# Family & Device:    iCE40HX1K
+# Package:            VQ100
+# ##############################################################################
 
+# Main FPGA Clock
 set_io clock 15
 
 # LED Pins
@@ -8,8 +15,51 @@ set_io led2 57
 set_io led3 59
 set_io led4 60
 
-# Push Button Switches
+# Push-Button Switches
 set_io switch1 53
 set_io switch2 51
 set_io switch3 54
 set_io switch4 52
+
+# 7 Segment Outputs
+set_io segment_1a 3
+set_io segment_1b 4
+set_io segment_1c 93
+set_io segment_1d 91
+set_io segment_1e 90
+set_io segment_1f 1
+set_io segment_1g 2
+set_io segment_2a 100
+set_io segment_2b 99
+set_io segment_2c 97
+set_io segment_2d 95
+set_io segment_2e 94
+set_io segment_2f 8
+set_io segment_2g 96
+
+# UART Outputs
+set_io uart_rx 73
+set_io uart_tx 74
+
+# VGA Outputs
+set_io vga_hsync   26
+set_io vga_vsync   27
+set_io vga_red_0   36
+set_io vga_red_1   37
+set_io vga_red_2   40
+set_io vga_green_0 29
+set_io vga_green_1 30
+set_io vga_green_2 33
+set_io vga_blue_0  28
+set_io vga_blue_1  41
+set_io vga_blue_2  42
+
+# PMOD Signals
+set_io pmod_1  65
+set_io pmod_2  64
+set_io pmod_3  63
+set_io pmod_4  62
+set_io pmod_7  78
+set_io pmod_8  79
+set_io pmod_9  80
+set_io pmod_10 81
